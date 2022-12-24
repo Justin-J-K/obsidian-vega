@@ -1,6 +1,9 @@
-import { TFile } from "obsidian";
+import { normalizePath, TFile } from "obsidian";
 import { Loader } from "vega";
 import ObsidianVegaPlugin from "./main";
+
+const httpRegex = /^https?:\/\//;
+const fileRegex = /^file:\/\//
 
 export default class VegaLoader implements Loader {
     plugin: ObsidianVegaPlugin;
@@ -12,11 +15,25 @@ export default class VegaLoader implements Loader {
     async load(uri: string, _?: any): Promise<string> {
         const result = await this.sanitize(uri);
 
-        return this.file(result.href);
+        return result.isHttp ?
+                this.http(result.href) :
+                this.file(result.href);
     }
     
-    async sanitize(uri: string, _?: any): Promise<{ href: string }> {
-        return { href: uri };
+    async sanitize(uri: string, _?: any): Promise<{ href: string, isHttp: boolean }> {
+        const isHttp = httpRegex.test(uri);
+
+        if (isHttp) {
+            return { href: uri, isHttp: isHttp };
+        }
+
+        const isFileScheme = fileRegex.test(uri);
+
+        if (isFileScheme) {
+            throw Error('File URI scheme is not supported');
+        }
+
+        return { href: normalizePath(uri), isHttp: isHttp };
     }
 
     async http(uri: string, _?: any): Promise<string> {
