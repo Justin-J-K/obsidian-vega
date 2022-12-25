@@ -8,10 +8,18 @@ export default class ObsidianVegaPlugin extends Plugin {
 
     vegaCodeBlockProcessor = (isLite: boolean) => { return async (source: string, el: HTMLElement, _: MarkdownPostProcessorContext) => {
         try {
+            const sourceAsJson = JSON.parse(source);
             const spec = isLite ?
-                    vegaLite.compile(JSON.parse(source)).spec :
-                    JSON.parse(source);
-            const runtime = vega.parse(spec);
+                    vegaLite.compile(sourceAsJson, {
+                        config: {
+                            background: undefined
+                        }
+                    }).spec :
+                    sourceAsJson;
+
+            const runtime = vega.parse(spec, {
+                background: 'white'
+            });
             const view = new vega.View(runtime, {
                 renderer: 'svg',
                 loader: this.loaderInstance,
