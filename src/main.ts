@@ -18,7 +18,7 @@ export default class ObsidianVegaPlugin extends Plugin {
                     sourceAsJson;
 
             const runtime = vega.parse(spec, {
-                background: 'white'
+                background: null
             });
             const view = new vega.View(runtime, {
                 renderer: 'svg',
@@ -32,7 +32,7 @@ export default class ObsidianVegaPlugin extends Plugin {
         } catch(e) {
             const errorText = `Error parsing Vega${isLite ? '-Lite' : ''} diagram!\n\n${e.message}`;
             el.createEl('pre').createEl('code', { 
-                cls: `language-vega-${isLite ? '-lite' : ''}`,
+                cls: `language-vega${isLite ? '-lite' : ''}`,
                 text: errorText
             });
             console.error(e);

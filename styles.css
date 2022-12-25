@@ -1,8 +1,15 @@
-/*
+.theme-dark .mark-rule.role-axis-grid>line {
+    stroke: #888
+}
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+.theme-dark .mark-rule>line {
+    stroke: #fff
+}
 
-If your plugin does not need CSS, delete this file.
+.theme-dark g.role-frame>g>path.background {
+    stroke: #888
+}
 
-*/
+.theme-dark .mark-text text {
+    fill: #fff
+}
