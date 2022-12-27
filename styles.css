@@ -1,15 +1,15 @@
 .theme-dark .mark-rule.role-axis-grid>line {
-    stroke: #888
+    stroke: #888;
+}
+
+.theme-dark g.role-frame>g>path.background[fill] {
+    stroke: #888;
 }
 
 .theme-dark .mark-rule>line {
-    stroke: #fff
-}
-
-.theme-dark g.role-frame>g>path.background {
-    stroke: #888
+    stroke: #fff;
 }
 
 .theme-dark .mark-text text {
-    fill: #fff
+    fill: #fff;
 }
