@@ -23,7 +23,7 @@ export default class ObsidianVegaPlugin extends Plugin {
         return {
             background: null,
             group: {
-                stroke: cssBackgroundModifierBorder
+                stroke: null
             },
             style: {
                 'guide-label': {
@@ -63,6 +63,7 @@ export default class ObsidianVegaPlugin extends Plugin {
             const font = getComputedStyle(document.body).getPropertyValue('--font-mermaid');
             const parseConfig = this.getParseConfig(font);
             const runtime = vega.parse(spec, parseConfig);
+
 
             const view = new vega.View(runtime, {
                 renderer: 'svg',
