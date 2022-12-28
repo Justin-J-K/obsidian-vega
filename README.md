@@ -1,10 +1,12 @@
 # Obsidian Vega
 
-Create highly customizable data visualizations using Vega or Vega-Lite specifications written in JSON format. Additional documentation can be found at the Vega website for formatting [Vega specifications](https://vega.github.io/vega/docs/) and [Vega-Lite spefications](https://vega.github.io/vega-lite/docs/). 
+Create highly customizable data visualizations using Vega or Vega-Lite specifications written in JSON format. Additional documentation can be found at the Vega website for formatting [Vega specifications](https://vega.github.io/vega/docs/) and [Vega-Lite specifications](https://vega.github.io/vega-lite/docs/). 
 
 To add a chart or plot, create a code block with `vega` or `vega-lite` as the language and add the JSON specification.
 
 ## Examples
+
+### Bar Chart using Vega-Lite
 
 ~~~markdown
 ```vega-lite
@@ -26,6 +28,8 @@ To add a chart or plot, create a code block with `vega` or `vega-lite` as the la
 ~~~
 
 ![Example Bar Chart](assets/example1.png)
+
+### Line Chart Using Vega
 
 ~~~
 ```vega
