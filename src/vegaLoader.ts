@@ -2,17 +2,14 @@ import { normalizePath, TFile } from "obsidian";
 import { Loader } from "vega";
 import ObsidianVegaPlugin from "./main";
 
-const httpRegex = /^https?:\/\//;
-const fileRegex = /^file:\/\//
-
 export default class VegaLoader implements Loader {
-    plugin: ObsidianVegaPlugin;
+    private plugin: ObsidianVegaPlugin;
 
     constructor(plugin: ObsidianVegaPlugin) {
         this.plugin = plugin;
     }
 
-    async load(uri: string, _?: any): Promise<string> {
+    public async load(uri: string, _?: any): Promise<string> {
         const result = await this.sanitize(uri);
 
         return result.isHttp ?
@@ -20,23 +17,25 @@ export default class VegaLoader implements Loader {
                 this.file(result.href);
     }
     
-    async sanitize(uri: string, _?: any): Promise<{ href: string, isHttp: boolean }> {
-        const isHttp = httpRegex.test(uri);
+    public async sanitize(uri: string, _?: any): Promise<{ href: string, isHttp: boolean }> {
+        const schemeRegex = /^([a-z.+\-])(?::\/\/)/i;
+        const schemeMatch = uri.match(schemeRegex);
 
-        if (isHttp) {
-            return { href: uri, isHttp: isHttp };
+        if (schemeMatch) {
+            const scheme = schemeMatch[1].toLowerCase();
+            const httpRegex = /^https?/;
+
+            if (!httpRegex.test(scheme)) {
+                throw Error(`URI scheme '${scheme[1].toLowerCase()}' is not supported`);
+            }
+            
+            return { href: uri, isHttp: true };
         }
 
-        const isFileScheme = fileRegex.test(uri);
-
-        if (isFileScheme) {
-            throw Error('File URI scheme is not supported');
-        }
-
-        return { href: normalizePath(uri), isHttp: isHttp };
+        return { href: normalizePath(uri), isHttp: false };
     }
 
-    async http(uri: string, _?: any): Promise<string> {
+    public async http(uri: string, _?: any): Promise<string> {
         const response = await fetch(uri);
 
         if (response.ok) {
@@ -46,7 +45,7 @@ export default class VegaLoader implements Loader {
         throw Error(`Error ${response.status}: ${response.statusText}`);
     }
 
-    async file(filename: string, _?: any): Promise<string> {
+    public async file(filename: string, _?: any): Promise<string> {
         const vault = this.plugin.app.vault;
         const file = vault.getAbstractFileByPath(filename);
 
