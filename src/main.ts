@@ -17,9 +17,50 @@ const compileOptions: CompileOptions = {
 };
 
 export default class ObsidianVegaPlugin extends Plugin {
-    loaderInstance = new VegaLoader(this);
+    private loaderInstance = new VegaLoader(this);
 
-    getParseConfig = (font: string): vega.Config => {
+    public async onload() {
+        this.registerMarkdownCodeBlockProcessor('vega', this.vegaCodeBlockProcessor(false));
+        this.registerMarkdownCodeBlockProcessor('vega-lite', this.vegaCodeBlockProcessor(true));
+    }
+
+    private vegaCodeBlockProcessor(isLite: boolean) {
+        return async (source: string, el: HTMLElement, _: MarkdownPostProcessorContext) => {
+            try {
+                const sourceAsJson = JSON.parse(source);
+                const spec = isLite ?
+                        vegaLite.compile(sourceAsJson, compileOptions).spec :
+                        sourceAsJson;
+                
+                const font = getComputedStyle(document.body).getPropertyValue('--font-text');
+                const parseConfig = this.getParseConfig(font);
+                const runtime = vega.parse(spec, parseConfig);
+    
+                const view = new vega.View(runtime, {
+                    renderer: 'svg',
+                    loader: this.loaderInstance,
+                    logLevel: vega.Warn
+                });
+    
+                const vegaWrapper = createDiv();
+                view.initialize(vegaWrapper);
+
+                await view.runAsync();
+
+                el.appendChild(vegaWrapper);
+                
+            } catch(e) {
+                const errorText = `Error parsing Vega${isLite ? '-Lite' : ''} diagram!\n\n${e.message}`;
+                el.createEl('pre').createEl('code', { 
+                    cls: `language-vega${isLite ? '-lite' : ''}`,
+                    text: errorText
+                });
+                console.error(e);
+            }
+        };
+    }
+
+    private getParseConfig(font: string): vega.Config {
         return {
             background: null,
             group: {
@@ -48,44 +89,8 @@ export default class ObsidianVegaPlugin extends Plugin {
                 font: font,
                 subtitleFont: font,
                 color: cssTextNormal,
-                subtitleColor: cssTextNormal,
+                subtitleColor: cssTextNormal
             }
         }
-    };
-
-    vegaCodeBlockProcessor = (isLite: boolean) => { return async (source: string, el: HTMLElement, _: MarkdownPostProcessorContext) => {
-        try {
-            const sourceAsJson = JSON.parse(source);
-            const spec = isLite ?
-                    vegaLite.compile(sourceAsJson, compileOptions).spec :
-                    sourceAsJson;
-            
-            const font = getComputedStyle(document.body).getPropertyValue('--font-mermaid');
-            const parseConfig = this.getParseConfig(font);
-            const runtime = vega.parse(spec, parseConfig);
-
-
-            const view = new vega.View(runtime, {
-                renderer: 'svg',
-                loader: this.loaderInstance,
-                logLevel: vega.Warn
-            });
-
-            view.initialize(el);
-
-            await view.runAsync();
-        } catch(e) {
-            const errorText = `Error parsing Vega${isLite ? '-Lite' : ''} diagram!\n\n${e.message}`;
-            el.createEl('pre').createEl('code', { 
-                cls: `language-vega${isLite ? '-lite' : ''}`,
-                text: errorText
-            });
-            console.error(e);
-        }
-    }};
-
-    async onload() {
-        this.registerMarkdownCodeBlockProcessor('vega', this.vegaCodeBlockProcessor(false));
-        this.registerMarkdownCodeBlockProcessor('vega-lite', this.vegaCodeBlockProcessor(true));
     }
 }
