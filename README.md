@@ -82,3 +82,10 @@ To add a chart or plot, create a code block with `vega` or `vega-lite` as the la
 ~~~
 
 ![Example Line Chart](assets/example2.png)
+
+## Acknowledgements
+
+### Vega, Vega-Lite
+
+BSD 3-Clause "New" or "Revised" License\
+Copyright (c) 2015-2021, University of Washington Interactive Data Lab
