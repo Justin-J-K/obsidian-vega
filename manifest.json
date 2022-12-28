@@ -1,9 +1,9 @@
 {
 	"id": "obsidian-vega",
 	"name": "Obsidian Vega",
-	"version": "1.0.0",
+	"version": "0.1.0",
 	"minAppVersion": "0.15.0",
-	"description": "Create data visualizations like charts using Vega or Vega-Lite.",
+	"description": "Create highly-customizable data visualizations like line charts and scatter plots using Vega or Vega-Lite.",
 	"author": "Justin Kim",
 	"authorUrl": "https://github.com/Some-Regular-Person",
 	"isDesktopOnly": false
