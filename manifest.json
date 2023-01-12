@@ -1,6 +1,6 @@
 {
 	"id": "obsidian-vega",
-	"name": "Obsidian Vega",
+	"name": "Vega Visualizations",
 	"version": "0.1.0",
 	"minAppVersion": "0.15.0",
 	"description": "Create highly-customizable data visualizations like line charts and scatter plots using Vega or Vega-Lite.",

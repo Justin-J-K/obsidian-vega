@@ -16,7 +16,7 @@ const compileOptions: CompileOptions = {
     }
 };
 
-export default class ObsidianVegaPlugin extends Plugin {
+export default class VegaVisualizationsPlugin extends Plugin {
     private loaderInstance = new VegaLoader(this);
 
     public async onload() {

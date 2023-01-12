@@ -1,11 +1,11 @@
 import { normalizePath, TFile } from "obsidian";
 import { Loader } from "vega";
-import ObsidianVegaPlugin from "./main";
+import VegaVisualizationsPlugin from "./main";
 
 export default class VegaLoader implements Loader {
-    private plugin: ObsidianVegaPlugin;
+    private plugin: VegaVisualizationsPlugin;
 
-    constructor(plugin: ObsidianVegaPlugin) {
+    constructor(plugin: VegaVisualizationsPlugin) {
         this.plugin = plugin;
     }
 

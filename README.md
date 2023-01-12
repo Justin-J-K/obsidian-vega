@@ -1,4 +1,4 @@
-# Obsidian Vega
+# Vega Visualizations
 
 Create highly customizable data visualizations using Vega or Vega-Lite specifications written in JSON format. Additional documentation can be found at the Vega website for formatting [Vega specifications](https://vega.github.io/vega/docs/) and [Vega-Lite specifications](https://vega.github.io/vega-lite/docs/). 
 
