@@ -31,7 +31,7 @@ To add a chart or plot, create a code block with `vega` or `vega-lite` as the la
 
 ### Line Chart Using Vega
 
-~~~
+~~~markdown
 ```vega
 {
   "width": 400,
