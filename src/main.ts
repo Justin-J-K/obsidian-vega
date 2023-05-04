@@ -90,6 +90,10 @@ export default class VegaVisualizationsPlugin extends Plugin {
                 subtitleFont: font,
                 color: cssTextNormal,
                 subtitleColor: cssTextNormal
+            },
+            text: {
+                font: font,
+                fill: cssTextNormal
             }
         }
     }
